@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Letter For You</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main class="container">
+        <div class="envelope">
+            <div class="envelope__back"></div>
+
+            <article class="letter" id="letter" aria-hidden="true">
+                <h2 class="letter__title">Dear You,</h2>
+                <p class="letter__text">muka kang tite haha.</p>
+                <p class="letter__sign">&mdash; Toledo</p>
+            </article>
+
+            <!-- Front pocket: three triangles drawn with SVG (no clip-path) -->
+            <div class="envelope__front" aria-hidden="true">
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false">
+                    <polygon points="0,0 50,50 100,0 100,100 0,100" fill="#7a0f20" />
+                    <polygon points="0,0 50,50 0,100" fill="#a01830" />
+                    <polygon points="100,0 50,50 100,100" fill="#8e1226" />
+                    <polyline points="0,0 50,50 100,0" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1" vector-effect="non-scaling-stroke" />
+                </svg>
+            </div>
+
+            <!-- Flap: triangle drawn with SVG -->
+            <div class="envelope__flap" aria-hidden="true">
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false">
+                    <defs>
+                        <linearGradient id="flap-fill" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="#c21b36" />
+                            <stop offset="1" stop-color="#a01530" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="0,0 100,0 50,99" fill="url(#flap-fill)" />
+                    <polyline points="0,0 50,99 100,0" fill="none" stroke="#8a1024" stroke-width="1.5" vector-effect="non-scaling-stroke" />
+                </svg>
+            </div>
+
+            <div class="envelope__seal" aria-hidden="true">&hearts;</div>
+        </div>
+
+        <button class="view" type="button" aria-expanded="false" aria-controls="letter">View Letter</button>
+    </main>
+
+    <script src="script.js" defer></script>
+</body>
+
+</html>

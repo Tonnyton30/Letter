@@ -1,0 +1,214 @@
+/* ---------- Design tokens ---------- */
+:root {
+    --ink: #0d0305;
+    --wine: #5c0a16;
+    --maroon: #800000;
+    --crimson: #dc143c;
+    --paper: #f5f5dc;
+    --paper-text: #4a0a14;
+
+    --w: min(320px, 82vw);
+    --h: calc(var(--w) * 0.66);
+    --rise: calc(var(--h) * 0.45); /* how far the letter slides out */
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* ---------- Page ---------- */
+body {
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    overflow-x: hidden;
+    color: var(--paper);
+    font-family: "Inter", system-ui, sans-serif;
+    background: radial-gradient(ellipse at 50% 35%, #2b0a12 0%, var(--ink) 55%, #000 100%);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(2.5rem, 8vh, 4rem);
+    padding: 2rem 1rem;
+}
+
+/* ---------- Envelope ---------- */
+.envelope {
+    position: relative;
+    width: var(--w);
+    height: var(--h);
+    cursor: pointer;
+}
+
+.envelope__back,
+.envelope__front,
+.envelope__flap,
+.letter {
+    position: absolute;
+}
+
+/* inside of the envelope + the glow */
+.envelope__back {
+    inset: 0;
+    z-index: 0;
+    border-radius: 10px;
+    background: linear-gradient(180deg, var(--wine), #3d0610);
+    box-shadow:
+        0 0 45px 4px rgba(220, 20, 60, 0.35),
+        0 24px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* front pocket */
+.envelope__front {
+    inset: 0;
+    z-index: 3;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.envelope__front svg,
+.envelope__flap svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* flap (3D rotation is written inside transform, so no perspective needed on the parent) */
+.envelope__flap {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 51%;
+    z-index: 4;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    transform-origin: top;
+    transform: perspective(900px) rotateX(0deg);
+    transition: transform 0.6s ease 0.45s, z-index 0s 0.45s;
+}
+
+/* wax seal on the flap tip */
+.envelope__seal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 5;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: #ffd9de;
+    font-size: 1.3rem;
+    background: radial-gradient(circle at 35% 30%, #ff4d6d, var(--crimson) 55%, #8e0b25);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    transition: opacity 0.3s ease 0.8s, transform 0.3s ease 0.8s;
+}
+
+/* ---------- Letter ---------- */
+.letter {
+    left: 6%;
+    right: 6%;
+    bottom: 4%;
+    height: 88%;
+    z-index: 2;
+    padding: calc(var(--h) * 0.07) 1.1rem 0;
+    overflow: hidden;
+    text-align: center;
+    color: var(--paper-text);
+    font-family: "Caveat", cursive;
+    border-radius: 6px;
+    background: linear-gradient(180deg, #fbf8e6, #f2ecc9);
+    box-shadow: inset 0 0 18px rgba(128, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.55s var(--ease);
+}
+
+.letter__title {
+    margin: 0 0 0.25rem;
+    font-size: 2.1rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--maroon);
+}
+
+.letter__text {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.letter__sign {
+    margin: 0.4rem 0 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--maroon);
+}
+
+/* ---------- Open state ---------- */
+.container.open .envelope__flap {
+    transform: perspective(900px) rotateX(180deg);
+    z-index: 1;
+    transition: transform 0.6s ease, z-index 0s 0.3s;
+}
+
+.container.open .letter {
+    transform: translateY(calc(var(--rise) * -1)) rotate(-1.5deg);
+    transition: transform 0.8s var(--ease) 0.45s;
+}
+
+.container.open .envelope__seal {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* ---------- Button ---------- */
+.view {
+    min-width: 11.5rem;
+    padding: 0.9rem 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    color: #fff;
+    font: 600 0.95rem/1 "Inter", system-ui, sans-serif;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    background: linear-gradient(135deg, #ff3b5c, var(--crimson) 55%, #b01030);
+    box-shadow: 0 0 22px rgba(220, 20, 60, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.view:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 32px rgba(220, 20, 60, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.view:active {
+    transform: translateY(0) scale(0.97);
+    filter: brightness(0.9);
+}
+
+.view:focus-visible {
+    outline: 3px solid var(--paper);
+    outline-offset: 4px;
+}
+
+/* ---------- Respect "reduce motion" settings ---------- */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        transition-delay: 0s !important;
+    }
+}
